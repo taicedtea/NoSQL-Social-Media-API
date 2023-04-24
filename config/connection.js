@@ -1,8 +1,11 @@
+// Allows connect to mongo db
 const { connect, connection } = require('mongoose');
+//names the DB, userDB
+const connectionString = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/userDB'
 
-connect('mongodb://localhost/developersApplications', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
 module.exports = connection;

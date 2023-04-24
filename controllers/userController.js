@@ -8,7 +8,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err))
     },
     //get user by ID
-    getUserByID(req, res) { 
+    getUserById(req, res) { 
         User.findOne({_id: req.params.userId})
             .populate({path: 'thought', select:'-__v' })
             .populate({path: 'friends', select:'-__v' })
