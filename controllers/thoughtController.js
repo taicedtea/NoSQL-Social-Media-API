@@ -3,17 +3,9 @@ const { User, Thought } = require('../models');
 model.exports = {
     //gets all thoughts
     getAllThoughts(req, res) {
-        Thought.find({})
-        .populate({
-            path: 'reactions',
-            select: '-__v'
-        })
-        .select('-__v')
-        .then((thought) => res.json(thought))
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-        });
+        Thought.find()
+            .then((thoughts) => res.json(thoughts))
+            .catch((err) => res.status(500).json(err))
     },
     //gets thought by ID
     getThoughtById(req, res) {
@@ -38,7 +30,7 @@ model.exports = {
                 !data ? res.status(404).json({message: 'No user found'}) :
                 res.json(data)
             })
-            .catch(err => res.json(err));
+            .catch(err => res.status(500).json(err));
     },
     //updates thoughts via ID
     updateThought(req,res) {
@@ -49,9 +41,9 @@ model.exports = {
             {new: true, runValidators: true})
         .populate({path: 'reactions', select: '-__v'})
         .select('-___v')
-        .then(data => {
-            !data ? res.status(404).json({message: 'No thoughts with this ID found'}) :
-            res.json(data);
+        .then(thought => {
+            !thought ? res.status(404).json({message: 'No thoughts with this ID found'}) :
+            res.json(thought);
         })
         .catch(err => res.status(400).json(err));
     },
@@ -59,9 +51,9 @@ model.exports = {
     deleteThought(req, res) {
         Thought
         .findOneAndDelete({_id: req.params.thoughtId})
-        .then(data => {
-            !data ? res.status(404).json({message: 'No thoughts with this ID found'}) :
-            res.json(data);
+        .then(thought => {
+            !thought ? res.status(404).json({message: 'No thoughts found with this ID'}) :
+            res.json(thought);
         })
         .catch(err => res.status(400).json(err))
     },
@@ -74,9 +66,9 @@ model.exports = {
         )
         .populate({path: 'reactions', select: '-__v'})
         .select('-___v')
-        .then(data => {
-            !data ? res.status(404).json({message: 'No thoughts with this ID found'}) :
-            res.json(data);
+        .then(reaction => {
+            !reaction ? res.status(404).json({message: 'No reaction found with this ID'}) :
+            res.json(reaction);
         })
         .catch(err => res.status(400).json(err));
     },
