@@ -10,9 +10,7 @@ module.exports = {
     //get user by ID
     getUserById(req, res) { 
         User.findOne({_id: req.params.userId})
-            .populate({path: 'thought', select:'-__v' })
-            .populate({path: 'friends', select:'-__v' })
-            .populate('-__v')
+            .select('-__v')
             .then((user) => {
                 !user ? res.status(400).json({message: 'No user found with this ID'}) :
                 res.json(user)
@@ -23,7 +21,7 @@ module.exports = {
     createUser({body}, res) {
         User.create(body)
             .then(data => res.json(data))
-            .catch(err => res.status(400).json(err));
+            .catch((err) => res.status(500).json(err));
 
     },
     //updates user by ID
@@ -37,16 +35,17 @@ module.exports = {
             !user ? res.status(400).json({message: 'user not found'}) :
             res.json(user)
         })
-        .catch(err => res.status(400).json(err))
+        .catch((err) => res.status(500).json(err))
     },
     //deletes user by ID
-    deleteUser(req, res) {
-        User.findOneAndDelete({_id: req.params.userId})
-            .then((user) => {
-                !user ? res.status(404).json({message: 'No user found'}) :
-                res.json(user);
-            })
-            .catch(err = res.status(400).json(err));
+    deleteUser(req, res){
+        User.findByIdAndDelete({ _id: req.params.userId })
+            .then((user) =>
+                !user ? res.status(404).json({ message: 'No user with that ID' }) : 
+                Thought.deleteMany({ _id: { $in: user.thoughts } })
+            )
+            .then(() => res.json({ message: 'User and associated thoughts have been deleted' }))
+            .catch((err) => res.status(500).json(err))
     },
     //add friend
     addFriend(req, res) {
@@ -61,7 +60,7 @@ module.exports = {
             !data ? res.status(404).json({message: 'No user found'}) :
             res.json(DataTransfer)
         })
-        .catch(err => res.json(err));
+        .catch((err) => res.status(500).json(err));
     },
     //delete friend
     deleteFriend(req, res) {
@@ -76,6 +75,6 @@ module.exports = {
             !data ? res.status(404).json({message: 'No user found'}) :
             res.json(DataTransfer)
         })
-        .catch(err => res.json(err));
+        .catch((err) => res.status(500).json(err));
     }
 }
