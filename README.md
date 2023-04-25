@@ -18,6 +18,6 @@ Once started, open your API explorer application of choice and navigate to port 
 ## Video Walkthrough
 Watch video walk through here:
 
-[<img src="./assets/img/ecommerceBackend_exInsomnia.png" width="50%">](https://drive.google.com/file/d/1oipPsmbi7F7mJjC0VuPJ7z5hdhiYmA8z/view?usp=share_link)
+[<img src="./assets/img/socialMediaAPI_testScreenshot.png" width="50%">](https://drive.google.com/file/d/1c67NXny5MwEmPNLx7F5gY6f_JHwFIvME/view?usp=sharing)
 
 ### Checkout more of my projects [here](https://github.com/taicedtea)!

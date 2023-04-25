@@ -16,11 +16,6 @@ const reactionSchema = new Schema (
             type: String,
             Required: true,
         },
-        // createdAt: {
-        //     type: Date,
-        //     default: Date.now,
-        //     get: (timestamp) => timestamp.format('MM DD, YYYY [at] hh:mm a')
-        // }
     },
     {
         toJSON: {
@@ -38,11 +33,6 @@ const thoughtSchema = new Schema (
             minlength: 1,
             maxlength: 280,
         },
-        // createdAt: {
-        //     type: Date,
-        //     default: Date.now,
-        //     get: (timestamp) => timestamp.format('MM DD, YYYY [at] hh:mm a')
-        // },
         username: {
             type: String,
             required: true,
