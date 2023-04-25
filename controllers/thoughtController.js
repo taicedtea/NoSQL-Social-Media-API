@@ -8,21 +8,12 @@ module.exports = {
             .catch((err) => res.status(500).json(err))
     },
     //gets thought by ID
-    getThoughtById({params}, res) {
-        Thought.findOne({ _id: params.id })
-            .populate({
-                path: "reactions",
-                select: "-__v",
-            })
-            .select("-__v")
-            .then((data) => {
-                !data ? res.status(404).json({ message: "No though with this id!" }) :
-                res.json(data);
-            })
-        .catch((err) => {
-            console.log(err);
-            res.sendStatus(400);
-        });
+    getThoughtById(req, res) {
+        Thought.findOne({ _id: req.params.thoughtId })
+            .then((thought) => 
+                !thought ? res.status(400).json({ message: "no thoughts associated with this id" }) : res.json(thought)
+            )
+            .catch((err) => res.status(500).json(err))
     },
     //creates thought to user by ID
     createThought(req, res) {
@@ -42,6 +33,15 @@ module.exports = {
     },
     //updates thoughts via ID
     updateThought (req, res) {
+        Thought.findByIdAndUpdate(
+            { _id:  req.params.thoughtId },
+            { $set: req.body},
+            { runValidators: true, new: true}
+        )
+            .then((thought) => {
+                !thought ? res.status(400).json({ message: 'no thoughts with this id' }) : res.json(thought)
+            })
+            .catch((err) => res.status(500).json(err))
     },
     //delete thought by ID
     deleteThought(req, res) {
@@ -72,7 +72,7 @@ module.exports = {
     deleteReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $pull: { reactions: { reactionId: req.params.reactionId } }},
+            { $pull: { reactions: {_id: req.params.reactionsId}}},
             { runValidators: true, new: true}
         )
         .then((thought) =>
