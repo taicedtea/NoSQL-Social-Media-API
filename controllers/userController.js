@@ -58,7 +58,7 @@ module.exports = {
         .select('-__v')
         .then(data => {
             !data ? res.status(404).json({message: 'No user found'}) :
-            res.json(DataTransfer)
+            res.json(data)
         })
         .catch((err) => res.status(500).json(err));
     },
@@ -73,7 +73,7 @@ module.exports = {
         .select('-__v')
         .then(data => {
             !data ? res.status(404).json({message: 'No user found'}) :
-            res.json(DataTransfer)
+            res.json(data)
         })
         .catch((err) => res.status(500).json(err));
     }
